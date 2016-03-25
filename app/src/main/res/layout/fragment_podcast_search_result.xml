@@ -1,0 +1,51 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.fireminder.archivist.search.result.PodcastSearchResultFragment">
+
+
+    <include
+        layout="@layout/view_podcast_search_result_header"
+        android:id="@+id/header"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingTop="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/latest_episode_subheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:text="@string/latest_episode"
+        />
+        <TextView
+            android:id="@+id/latest_info"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            tools:src="@color/black"
+            />
+
+    <TextView
+        android:id="@+id/description_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:text="@string/description"
+        />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="Lorem ipsum si dolor amet. Lorem ipsum si dolor amet"
+        />
+
+    </LinearLayout>
+</FrameLayout>

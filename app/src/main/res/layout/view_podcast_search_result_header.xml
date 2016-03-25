@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/header"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:visibility="visible"
+    >
+
+    <ImageView
+        android:id="@+id/album_art_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/album_art_background_description"
+        tools:src="@drawable/cakeFashionNugget"
+        />
+
+    <ImageView
+        android:id="@+id/album_art"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:contentDescription="@string/album_art"
+        tools:src="@drawable/cakeFashionNugget"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        />
+
+    <TextView
+        android:id="@+id/album_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:layout_toEndOf="@id/album_art"
+        tools:text="The Heart"
+        />
+
+    <TextView
+        android:id="@+id/album_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/album_art"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        tools:text="Kate Daniels"
+        />
+
+    <Button
+        android:id="@+id/subscribe"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:layout_toEndOf="@id/album_art"
+        android:text="@string/subscribe"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        />
+
+</RelativeLayout>
