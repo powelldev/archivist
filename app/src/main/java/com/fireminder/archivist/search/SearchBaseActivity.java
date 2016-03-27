@@ -8,16 +8,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.fireminder.archivist.IvyApplication;
 import com.fireminder.archivist.R;
+import com.fireminder.archivist.model.PodcastEpisodeModel;
 import com.fireminder.archivist.search.list.SearchResultListFragment;
 import com.fireminder.archivist.ui.BaseActivity;
 import com.fireminder.archivist.utils.Logger;
+
+import javax.inject.Inject;
 
 /**
  * Processes search requests by receiving Intent.ACTION_SEARCH intents and passing
  * the associated search term to a ListFragment.
  */
 public class SearchBaseActivity extends BaseActivity {
+
+  @Inject
+  PodcastEpisodeModel podcastEpisodeModel;
 
 
   private static final String TAG = "SearchBaseActivity";
@@ -28,6 +35,8 @@ public class SearchBaseActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    IvyApplication.getAppContext().getDbComponent().inject(this);
   }
 
   @Override
@@ -46,7 +55,7 @@ public class SearchBaseActivity extends BaseActivity {
       Logger.d(TAG, "handleIntent() query received: " + query);
       getFragmentManager()
           .beginTransaction()
-          .add(SearchResultListFragment.newInstance(query), "search_fragment")
+          .add(R.id.container, SearchResultListFragment.newInstance(query), "search_fragment")
           .commit();
     }
   }
@@ -60,6 +69,7 @@ public class SearchBaseActivity extends BaseActivity {
     SearchView searchView = (SearchView) searchItem.getActionView();
     SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
     searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
     return super.onCreateOptionsMenu(menu);
   }
 

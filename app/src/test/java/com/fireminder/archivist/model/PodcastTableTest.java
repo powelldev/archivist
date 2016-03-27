@@ -21,7 +21,7 @@ import java.util.UUID;
 import static com.fireminder.archivist.model.IvyContentProvider.Table.Podcasts;
 import static com.fireminder.archivist.model.PodcastTable.Contract.*;
 
-@Config(manifest = "app/src/main/AndroidManifest.xml", sdk = 21)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 @RunWith(RobolectricTestRunner.class)
 public class PodcastTableTest {
 

@@ -15,7 +15,7 @@ import org.robolectric.shadows.ShadowLog;
 import java.io.File;
 
 
-@Config(manifest = "app/src/main/AndroidManifest.xml", sdk = 21)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 @RunWith(RobolectricTestRunner.class)
 public class LogTest {
 

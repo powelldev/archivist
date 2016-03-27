@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="48dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:padding="4dp">
 
     <ImageView
         android:id="@+id/cover"
         android:layout_width="48dp"
-        android:layout_height="48dp"/>
+        android:layout_height="48dp"
+        android:layout_gravity="left"
+        />
 
     <TextView
         android:id="@+id/title"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="Scott Sigler Audiobooks"
+        />
 
     <TextView
         android:id="@+id/subtitle"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
+        android:layout_gravity="center_vertical"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="Scott Sigler"
+        />
 
     <ImageButton
         android:id="@+id/action"
+        android:layout_gravity="right"
         android:layout_width="48dp"
         android:layout_height="48dp"/>
 </FrameLayout>

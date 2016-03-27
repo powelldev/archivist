@@ -6,11 +6,9 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class SearchResult implements Parcelable {
-  @SerializedName("collectionName")
-  public String title;
 
   @SerializedName("collectionName")
-  public String description;
+  public String title;
 
   @SerializedName("artworkUrl100")
   public String imgUrl;
@@ -21,9 +19,8 @@ public class SearchResult implements Parcelable {
   @SerializedName("artistName")
   public String artist;
 
-  public SearchResult(String title, String description, String imgUrl, String feedUrl, String artist) {
+  public SearchResult(String title, String imgUrl, String feedUrl, String artist) {
     this.title = title;
-    this.description = description;
     this.imgUrl = imgUrl;
     this.feedUrl = feedUrl;
     this.artist = artist;
@@ -31,7 +28,6 @@ public class SearchResult implements Parcelable {
 
   protected SearchResult(Parcel in) {
     title = in.readString();
-    description = in.readString();
     imgUrl = in.readString();
     feedUrl = in.readString();
     artist = in.readString();
@@ -57,7 +53,6 @@ public class SearchResult implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(title);
-    dest.writeString(description);
     dest.writeString(imgUrl);
     dest.writeString(feedUrl);
     dest.writeString(artist);
@@ -67,7 +62,6 @@ public class SearchResult implements Parcelable {
   public String toString() {
     return "SearchResult{" +
         "title='" + title + '\'' +
-        ", description='" + description + '\'' +
         ", imgUrl='" + imgUrl + '\'' +
         ", feedUrl='" + feedUrl + '\'' +
         ", artist='" + artist + '\'' +

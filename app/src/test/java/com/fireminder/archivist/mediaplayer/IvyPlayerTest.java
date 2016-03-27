@@ -15,7 +15,7 @@ import org.robolectric.annotation.Config;
 import java.io.IOException;
 
 
-@Config(manifest = "app/src/main/AndroidManifest.xml", sdk = 21)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 @RunWith(RobolectricTestRunner.class)
 public class IvyPlayerTest {
 

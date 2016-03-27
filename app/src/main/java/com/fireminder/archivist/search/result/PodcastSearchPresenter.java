@@ -1,11 +1,5 @@
 package com.fireminder.archivist.search.result;
 
-import android.graphics.Bitmap;
-import android.support.v7.graphics.Palette;
-
-import com.bumptech.glide.Glide;
-import com.fireminder.archivist.ImageViewTargetCallback;
-import com.fireminder.archivist.IvyApplication;
 import com.fireminder.archivist.ui.PodcastRepository;
 import com.fireminder.archivist.search.SearchResult;
 
@@ -28,8 +22,9 @@ public class PodcastSearchPresenter implements PodcastSearchContract.UserActions
   @Override
   public void openResult(SearchResult searchResult) {
     searchResultView.showTitle(searchResult.title);
-    searchResultView.setDescription(searchResult.description);
+    searchResultView.setSubtitle(searchResult.artist);
 
+    /*
     Glide.with(IvyApplication.getAppContext()).load(searchResult.imgUrl).asBitmap()
         .into(new ImageViewTargetCallback(searchResultView.getAlbumArtView(),
             new ImageViewTargetCallback.OnBitmapLoaded() {
@@ -47,6 +42,8 @@ public class PodcastSearchPresenter implements PodcastSearchContract.UserActions
 
     Glide.with(IvyApplication.getAppContext()).load(searchResult.imgUrl).asBitmap()
         .into(searchResultView.getAlbumArtLargeView());
+
+        */
   }
 
   @Override

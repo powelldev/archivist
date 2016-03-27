@@ -22,11 +22,11 @@ import static com.fireminder.archivist.model.EpisodeTable.*;
 import static com.fireminder.archivist.model.EpisodeTable.Contract;
 import static com.fireminder.archivist.model.EpisodeTable.Episode;
 
-public class EpisodeUtils {
+public class EpisodeDao {
 
-  private static final String TAG = "EpisodeUtils";
+  private static final String TAG = "EpisodeDao";
 
-  public static void updateElapsed(final Episode media, final int currentPosition) {
+  public void updateElapsed(final Episode media, final int currentPosition) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final ContentValues contentValues = new ContentValues(1);
     contentValues.put(Contract.ELAPSED, currentPosition);
@@ -35,7 +35,7 @@ public class EpisodeUtils {
   }
 
   @Nullable
-  public static Episode getEpisode(@NonNull final UUID episodeUuid) {
+  public Episode getEpisode(@NonNull final UUID episodeUuid) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final Cursor cursor = contentResolver.query(IvyContentProvider.Table.Episodes.uri, null,
         Contract.EPISODE_UUID + " = ? ", SqlUtil.toArray(episodeUuid), null);
@@ -52,12 +52,21 @@ public class EpisodeUtils {
     }
   }
 
-  public static void insert(final Episode episode) {
+  public void insert(final Episode episode) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     contentResolver.insert(IvyContentProvider.Table.Episodes.uri, episode.toContentValues());
   }
 
-  public static void updateBytesDownloaded(final Episode media, final long downloaded) {
+  public int insert(final List<ContentValues> episodes) {
+    final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
+    ContentValues[] cv = new ContentValues[episodes.size()];
+    for (int i = 0; i < episodes.size(); i++) {
+      cv[i] = episodes.get(i);
+    }
+    return contentResolver.bulkInsert(IvyContentProvider.Table.Episodes.uri, cv);
+  }
+
+  public void updateBytesDownloaded(final Episode media, final long downloaded) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final ContentValues contentValues = new ContentValues(1);
     contentValues.put(Contract.BYTES_DOWNLOADED, downloaded);
@@ -65,7 +74,7 @@ public class EpisodeUtils {
         Contract.EPISODE_UUID + " = ? ", SqlUtil.toArray(media.episodeUuid));
   }
 
-  public static String generateFilename(final Episode episode) {
+  public String generateFilename(final Episode episode) {
     if (TextUtils.isEmpty(episode.streamUri)) {
       Logger.e(TAG, episode.title + " has no stream uri.");
       throw new IllegalArgumentException("episode has no stream uri");
@@ -83,7 +92,7 @@ public class EpisodeUtils {
     return file.getAbsolutePath();
   }
 
-  public static void updateFilename(final Episode media, final String filename) {
+  public void updateFilename(final Episode media, final String filename) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final ContentValues contentValues = new ContentValues(1);
     contentValues.put(Contract.LOCAL_URI, filename);
@@ -91,13 +100,13 @@ public class EpisodeUtils {
         Contract.EPISODE_UUID + " = ? ", SqlUtil.toArray(media.episodeUuid));
   }
 
-  public static String generateAndAssignFilename(final Episode episode) {
+  public String generateAndAssignFilename(final Episode episode) {
     final String filename = generateFilename(episode);
     updateFilename(episode, filename);
     return filename;
   }
 
-  public static void updateDownloaded(Episode media, DownloadStatus status) {
+  public void updateDownloaded(Episode media, DownloadStatus status) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final ContentValues contentValues = new ContentValues(1);
     contentValues.put(Contract.DOWNLOADED_STATUS, status.id);
@@ -105,14 +114,14 @@ public class EpisodeUtils {
         Contract.EPISODE_UUID + " = ? ", SqlUtil.toArray(media.episodeUuid));
   }
 
-  public static List<Episode> getEpisodesForPodcast(PodcastTable.Podcast podcast) {
+  public List<Episode> getEpisodesForPodcast(PodcastTable.Podcast podcast) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final Cursor cursor = contentResolver.query(IvyContentProvider.Table.Episodes.uri, null,
         Contract.PODCAST_UUID + " = ? ", SqlUtil.toArray(podcast.id), null);
     return cursorToEpisodeList(cursor);
   }
 
-  private static List<Episode> cursorToEpisodeList(Cursor cursor) {
+  private List<Episode> cursorToEpisodeList(Cursor cursor) {
     List<Episode> episodes = new ArrayList<>();
     if (cursor == null) {
       Logger.e(TAG, "cursorToEpisodeList() cursor null");
@@ -129,7 +138,7 @@ public class EpisodeUtils {
     return episodes;
   }
 
-  public static List<Episode> getEpisodesMarkedForDownload() {
+  public List<Episode> getEpisodesMarkedForDownload() {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final Cursor cursor = contentResolver.query(IvyContentProvider.Table.Episodes.uri, null,
         Contract.DOWNLOADED_STATUS + " = ? ", SqlUtil.toArray(DownloadStatus.FLAGGED_FOR_DOWNLOAD.id), null);

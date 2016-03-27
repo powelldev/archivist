@@ -18,21 +18,25 @@ import com.fireminder.archivist.IvyApplication;
 import com.fireminder.archivist.R;
 import com.fireminder.archivist.search.SearchResult;
 import com.fireminder.archivist.search.model.Injection;
+import com.fireminder.archivist.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultListFragment extends Fragment implements SearchListResultContract.View {
 
-  private ProgressBar mSearchPendingProgressBar;
+  private ProgressBar searchProgressBar;
   private SearchListResultContract.UserActionsListener mUserActionListener;
 
-  private RecyclerView mSearchResultListView;
-  private SearchAdapter mSearchResultListAdapter;
+  private RecyclerView resultsListView;
+  private SearchAdapter resultsAdapter;
 
   public static final String EXTRA_QUERY = "query";
 
+  private static final String TAG = "SearchResultListFragment";
+
   public static SearchResultListFragment newInstance(String query) {
+    Logger.d(TAG, "Received query string: " + query);
     SearchResultListFragment fragment = new SearchResultListFragment();
     Bundle bundle = new Bundle();
     bundle.putString(EXTRA_QUERY, query);
@@ -45,51 +49,49 @@ public class SearchResultListFragment extends Fragment implements SearchListResu
   }
 
   @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    mUserActionListener = new SearchListResultPresenter(Injection.provideSearchRepository(), this);
-  }
-
-  @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mSearchResultListAdapter = new SearchAdapter(new ArrayList<SearchResult>(0), mUserActionListener);
+    mUserActionListener = new SearchListResultPresenter(Injection.provideSearchRepository(), this);
+    resultsAdapter = new SearchAdapter(new ArrayList<SearchResult>(), mUserActionListener);
   }
 
   @Override
   public void onResume() {
     super.onResume();
     String query = getArguments().getString(EXTRA_QUERY);
+    Logger.d(TAG, "onResume: performing search with term: " + query);
     mUserActionListener.searchWithTerm(query);
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_search_result_list, container, false);
-    mSearchResultListView = (RecyclerView) root.findViewById(R.id.list);
-    mSearchResultListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    mSearchPendingProgressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
-    mSearchResultListView.setAdapter(mSearchResultListAdapter);
+    resultsListView = (RecyclerView) root.findViewById(R.id.list);
+    resultsListView.setHasFixedSize(false);
+    resultsListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    resultsListView.setAdapter(resultsAdapter);
+    searchProgressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
     return root;
   }
 
   @Override
   public void populate(List<SearchResult> searchResults) {
-    mSearchResultListAdapter.replaceData(searchResults);
-    mSearchResultListView.setAdapter(mSearchResultListAdapter);
+    Logger.d(TAG, String.format("populate: with %d results.", searchResults.size()));
+    resultsAdapter.replaceData(searchResults);
+    resultsListView.setAdapter(resultsAdapter);
   }
 
   @Override
   public void showLoadingDialog() {
-    if (mSearchPendingProgressBar != null) {
-      mSearchPendingProgressBar.setVisibility(View.VISIBLE);
+    if (searchProgressBar != null) {
+      searchProgressBar.setVisibility(View.VISIBLE);
     }
   }
 
   @Override
   public void hideLoadingDialog() {
-    if (mSearchPendingProgressBar != null) {
-      mSearchPendingProgressBar.setVisibility(View.GONE);
+    if (searchProgressBar != null) {
+      searchProgressBar.setVisibility(View.GONE);
     }
   }
 
@@ -115,7 +117,7 @@ public class SearchResultListFragment extends Fragment implements SearchListResu
     public void onBindViewHolder(SearchAdapter.ViewHolder viewHolder, int i) {
       SearchResult result = results.get(i);
       viewHolder.title.setText(result.title);
-      viewHolder.subtitle.setText(result.title);
+      viewHolder.subtitle.setText(result.artist);
       Glide.with(IvyApplication.getAppContext()).load(result.imgUrl).into(viewHolder.cover);
     }
 
@@ -145,6 +147,7 @@ public class SearchResultListFragment extends Fragment implements SearchListResu
         cover = (ImageView) itemView.findViewById(R.id.cover);
         action = (ImageButton) itemView.findViewById(R.id.action);
         itemView.setOnClickListener(this);
+        action.setOnClickListener(this);
       }
 
       @Override

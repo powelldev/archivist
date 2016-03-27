@@ -1,6 +1,7 @@
 package com.fireminder.archivist.model;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.fireminder.archivist.IvyApplication;
@@ -11,11 +12,11 @@ import java.util.List;
 
 import static com.fireminder.archivist.model.PodcastTable.Podcast;
 
-public class PodcastUtil {
+public class PodcastDao {
 
   private static final String TAG = "PodcastUtil";
 
-  public static List<Podcast> getAllPodcasts() {
+  public List<Podcast> getAllPodcasts() {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
     final Cursor cursor = contentResolver.query(IvyContentProvider.Table.Podcasts.uri, null, null, null, null);
 
@@ -37,4 +38,8 @@ public class PodcastUtil {
   }
 
 
+  public void insert(Podcast podcast) {
+    final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
+    contentResolver.insert(IvyContentProvider.Table.Podcasts.uri, podcast.toContentValues());
+  }
 }

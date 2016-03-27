@@ -14,7 +14,7 @@ public interface PodcastSearchContract {
 
     void setLatestInfo(CharSequence title, long timestamp);
 
-    void setDescription(CharSequence description);
+    void setSubtitle(CharSequence description);
 
     ImageView getAlbumArtView();
 

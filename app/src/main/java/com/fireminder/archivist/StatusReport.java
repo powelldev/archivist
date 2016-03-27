@@ -5,11 +5,12 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Pair;
 
-import com.fireminder.archivist.model.EpisodeUtils;
+import com.fireminder.archivist.model.EpisodeDao;
+import com.fireminder.archivist.model.PodcastDao;
 import com.fireminder.archivist.model.PodcastTable;
-import com.fireminder.archivist.model.PodcastUtil;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,14 +65,16 @@ public class StatusReport {
   }
 
   public static class AppInfo {
-    private final List<PodcastTable.Podcast> podcasts = PodcastUtil.getAllPodcasts();
+    // TODO dummy values here
+    private final List<PodcastTable.Podcast> podcasts = new ArrayList<>();
     private final HashMap<String, List<Episode>> podcastEpisodeMap = getPodcastEpisodeMap();
 
 
     public HashMap<String, List<Episode>> getPodcastEpisodeMap() {
       HashMap<String, List<Episode>> map = new HashMap<>();
       for (Podcast podcast : podcasts) {
-        List<Episode> episodes = EpisodeUtils.getEpisodesForPodcast(podcast);
+        // TODO Dummy values here
+        List<Episode> episodes = new ArrayList<>();
         map.put(podcast.title, episodes);
       }
       return map;

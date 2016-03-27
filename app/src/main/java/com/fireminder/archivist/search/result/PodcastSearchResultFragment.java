@@ -77,7 +77,7 @@ public class PodcastSearchResultFragment extends Fragment implements PodcastSear
   }
 
   @Override
-  public void setDescription(final CharSequence description) {
+  public void setSubtitle(final CharSequence description) {
     this.description.setText(description);
   }
 

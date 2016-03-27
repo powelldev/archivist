@@ -19,7 +19,7 @@ public class Logger {
   protected static final String LOG_FILENAME = "archivist_log.txt";
 
   protected static final int MAX_SIZE = 2000*1024;
-  private static final String TAG = "Log";
+  private static final String TAG = "Ivy";
 
   @SuppressLint("SimpleDateFormat")
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -29,11 +29,13 @@ public class Logger {
   private static Handler sHandler;
 
   public static void d(String tag, String s) {
+    android.util.Log.d(TAG, tag + ": " + s);
     write(System.currentTimeMillis(), Level.DEBUG, tag, s);
   }
 
-  public static void e(String tag, String s, IOException e) {
-    throw new IllegalArgumentException("Not yet implemented");
+  public static void e(String tag, String s, Throwable t) {
+    android.util.Log.e(TAG, tag + ": " + s, t);
+    write(System.currentTimeMillis(), Level.ERROR, tag, s);
   }
 
   enum Level {

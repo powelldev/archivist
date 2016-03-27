@@ -1,8 +1,8 @@
 package com.fireminder.archivist.sync;
 
 import com.fireminder.archivist.IvyApplication;
+import com.fireminder.archivist.model.EpisodeDao;
 import com.fireminder.archivist.model.EpisodeTable;
-import com.fireminder.archivist.model.EpisodeUtils;
 import com.fireminder.archivist.utils.Logger;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
@@ -15,34 +15,25 @@ import java.util.concurrent.ExecutionException;
 public class IvyDownloadManager {
 
   private static final String TAG = "IvyDownloadManager";
-  private static IvyDownloadManager sInstance;
 
-  IvyDownloadManager() {}
+  EpisodeDao episodeDao;
 
-  public static void init() {
-    sInstance = new IvyDownloadManager();
-  }
-
-  public static IvyDownloadManager getInstance() {
-    if (sInstance == null) {
-      throw new IllegalArgumentException("Download manager not yet instanciated. Make sure you are" +
-          "calling after Application singleton has been created");
-    }
-    return sInstance;
+  public IvyDownloadManager(EpisodeDao episodeDao) {
+    this.episodeDao = episodeDao;
   }
 
   public void download(final EpisodeTable.Episode episode, boolean blocking) {
     Logger.v(TAG, "download() episode: " + episode.toString());
-    EpisodeUtils.updateDownloaded(episode, EpisodeTable.DownloadStatus.FLAGGED_FOR_DOWNLOAD);
+    episodeDao.updateDownloaded(episode, EpisodeTable.DownloadStatus.FLAGGED_FOR_DOWNLOAD);
     Future<File> future = Ion.with(IvyApplication.getAppContext())
         .load(episode.streamUri)
         .progressHandler(new ProgressCallback() {
           @Override
           public void onProgress(long downloaded, long total) {
-            EpisodeUtils.updateBytesDownloaded(episode, downloaded);
+            episodeDao.updateBytesDownloaded(episode, downloaded);
           }
         })
-        .write(new File(EpisodeUtils.generateAndAssignFilename(episode)))
+        .write(new File(episodeDao.generateAndAssignFilename(episode)))
         .setCallback(new FutureCallback<File>() {
           @Override
           public void onCompleted(Exception e, File result) {
@@ -52,7 +43,7 @@ public class IvyDownloadManager {
               return;
             }
             Logger.v(TAG, "download() episode: " + episode.title + " successful");
-            EpisodeUtils.updateDownloaded(episode, EpisodeTable.DownloadStatus.DOWNLOADED);
+            episodeDao.updateDownloaded(episode, EpisodeTable.DownloadStatus.DOWNLOADED);
           }
         });
     if (blocking) {
@@ -65,9 +56,9 @@ public class IvyDownloadManager {
   }
 
   private void resetDownload(final EpisodeTable.Episode episode) {
-    EpisodeUtils.updateFilename(episode, "");
-    EpisodeUtils.updateBytesDownloaded(episode, 0);
-    EpisodeUtils.updateDownloaded(episode, EpisodeTable.DownloadStatus.DOWNLOAD_ATTEMPTED_FAILED);
+    episodeDao.updateFilename(episode, "");
+    episodeDao.updateBytesDownloaded(episode, 0);
+    episodeDao.updateDownloaded(episode, EpisodeTable.DownloadStatus.DOWNLOAD_ATTEMPTED_FAILED);
   }
 
 }

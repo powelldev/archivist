@@ -11,7 +11,7 @@ import org.robolectric.annotation.Config;
 
 
 
-@Config(manifest = "app/src/main/AndroidManifest.xml", sdk = 21)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 @RunWith(RobolectricTestRunner.class)
 public class SearchActivityTest extends TestCase {
 

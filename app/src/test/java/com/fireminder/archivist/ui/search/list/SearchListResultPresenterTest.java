@@ -40,7 +40,7 @@ public class SearchListResultPresenterTest {
   @Test
   public void searchWithTerm() throws Exception {
     final List<SearchResult> results = new ArrayList<>();
-    results.add(new SearchResult("", "", "", "", ""));
+    results.add(new SearchResult("", "", "", ""));
 
     presenter.searchWithTerm("");
     Mockito.verify(repository).search(Mockito.eq(""), mSearchCallbackCaptor.capture());

@@ -24,6 +24,6 @@ public interface SearchListResultContract {
   interface UserActionsListener {
     void openSearchResultDetail(Context context, SearchResult result);
     void searchWithTerm(String term);
-    void subscribe(SearchResult result);
+    boolean subscribe(SearchResult result);
   }
 }

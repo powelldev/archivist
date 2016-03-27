@@ -18,7 +18,7 @@ import static com.fireminder.archivist.model.EpisodeTable.DownloadStatus;
 import static com.fireminder.archivist.model.EpisodeTable.Episode;
 import static junit.framework.Assert.assertEquals;
 
-@Config(manifest = "app/src/main/AndroidManifest.xml", sdk = 21)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 @RunWith(RobolectricTestRunner.class)
 public class StatefulMediaPlayerMockitoTest {
 

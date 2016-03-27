@@ -27,7 +27,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.verify;
 
-@Config(manifest = "app/src/main/AndroidManifest.xml", sdk = 21)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 @RunWith(RobolectricTestRunner.class)
 public class PodcastSearchPresenterTest {
 
@@ -59,10 +59,11 @@ public class PodcastSearchPresenterTest {
 
   @Test
   public void openPodcast_sunnyPath() throws Exception {
-    presenter.openResult(new SearchResult("", "", "", "", ""));
+    presenter.openResult(new SearchResult("", "", "", ""));
 
     ArgumentCaptor<PodcastRepository.GetPodcastCallback> callbackArgumentCaptor =
         ArgumentCaptor.forClass(PodcastRepository.GetPodcastCallback.class);
+
     verify(podcastRepository).getPodcast(anyLong(), callbackArgumentCaptor.capture());
 
     List<PodcastTable.Podcast> podcastList = new ArrayList<>();
@@ -71,7 +72,7 @@ public class PodcastSearchPresenterTest {
     callbackArgumentCaptor.getValue().onPodcastLoaded(podcastList);
 
     verify(view).showTitle("title");
-    verify(view).setDescription("description");
+    verify(view).setSubtitle("description");
     verify(spyAlbumArt, Mockito.times(1)).setImageDrawable(Matchers.<Drawable>any());
     verify(spyLargeAlbumArt, Mockito.times(1)).setImageDrawable(Matchers.<Drawable>any());
   }
