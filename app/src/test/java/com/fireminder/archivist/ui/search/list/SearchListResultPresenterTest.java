@@ -1,5 +1,6 @@
 package com.fireminder.archivist.search.list;
 
+import com.fireminder.archivist.model.PodcastSubscriber;
 import com.fireminder.archivist.search.SearchResult;
 import com.fireminder.archivist.search.model.SearchResultsRepository;
 
@@ -22,6 +23,9 @@ public class SearchListResultPresenterTest {
   @Mock
   SearchListResultContract.View view;
 
+  @Mock
+  PodcastSubscriber podcastSubscriber;
+
   @Captor
   private ArgumentCaptor<SearchResultsRepository.SearchCallback> mSearchCallbackCaptor;
 
@@ -29,7 +33,7 @@ public class SearchListResultPresenterTest {
   @Before
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
-    presenter = new SearchListResultPresenter(repository, view);
+    presenter = new SearchListResultPresenter(repository, view, podcastEpisodeModel);
   }
 
   @Test

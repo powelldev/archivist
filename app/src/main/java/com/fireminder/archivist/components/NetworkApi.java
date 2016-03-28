@@ -17,7 +17,7 @@ public class NetworkApi {
   }
 
   public interface Callback {
-    void onSuccess(String resposne);
+    void onSuccess(String feedUrl, String resposne);
     void onFailure(String reason, Throwable tr);
   }
 
@@ -27,9 +27,9 @@ public class NetworkApi {
     requestQueue.addToRequestQueue(request);
     try {
       String response = future.get(DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-      callback.onSuccess(response);
+      callback.onSuccess(url, response);
     } catch (Exception e) {
-      callback.onFailure("Exception occured:", e);
+      callback.onFailure("Exception occurred:", e);
     }
   }
 

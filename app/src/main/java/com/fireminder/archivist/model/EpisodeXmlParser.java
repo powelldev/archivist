@@ -1,8 +1,8 @@
 package com.fireminder.archivist.model;
 
+
 import android.content.ContentValues;
 
-import com.fireminder.archivist.components.NetworkApi;
 import com.fireminder.archivist.utils.Logger;
 import com.fireminder.archivist.utils.TimingLogger;
 
@@ -17,62 +17,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import static com.fireminder.archivist.model.EpisodeTable.Contract.*;
+import static com.fireminder.archivist.model.EpisodeTable.Contract.DESCRIPTION;
+import static com.fireminder.archivist.model.EpisodeTable.Contract.EPISODE_UUID;
+import static com.fireminder.archivist.model.EpisodeTable.Contract.PODCAST_UUID;
+import static com.fireminder.archivist.model.EpisodeTable.Contract.PUBLICATION_DATE;
+import static com.fireminder.archivist.model.EpisodeTable.Contract.STREAM_URI;
+import static com.fireminder.archivist.model.EpisodeTable.Contract.TITLE;
 
-public class PodcastEpisodeModel {
+public class EpisodeXmlParser {
 
-  private static final String TAG = "PodcastEpisodeModel";
+  private static final String TAG = "EpisodeXmlParser";
 
-  NetworkApi networkApi;
-  PodcastDao podcastDao;
-  EpisodeDao episodeDao;
+  private static SimpleDateFormat formatter = new SimpleDateFormat(
+      "EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.US);
 
-  PodcastEpisodeModel(NetworkApi networkApi, PodcastDao podcastDao, EpisodeDao episodeDao) {
-    this.networkApi = networkApi;
-    this.podcastDao = podcastDao;
-    this.episodeDao = episodeDao;
-  }
+  public List<ContentValues> parseEpisodeInfo(String response,
+      String podcastUuid) throws DocumentException {
 
-  public void subscribe(String feedUrl) {
-    networkApi.get(feedUrl, new NetworkApi.Callback() {
-      @Override
-      public void onSuccess(String response) {
-        parseAndInsert(response);
-      }
-
-      @Override
-      public void onFailure(String reason, Throwable tr) {
-        Logger.e(TAG, "subscribe failure for: " + reason, tr);
-      }
-    });
-  }
-
-  private void parseAndInsert(final String response) {
-    final PodcastTable.Podcast podcast = parsePodcastInfo(response);
-    podcastDao.insert(podcast);
-
-    List<ContentValues> episodes = null;
-
-    try {
-      episodes = parseEpisodeInfo(response, podcast);
-    } catch (DocumentException e) {
-      Logger.e(TAG, "Document error for podcast: " + podcast.title, e);
-    }
-
-    if (episodes != null) {
-      episodeDao.insert(episodes);
-    }
-  }
-
-  PodcastTable.Podcast parsePodcastInfo(String response) {
-    return null;
-  }
-
-  private List<ContentValues> parseEpisodeInfo(String response,
-                                               PodcastTable.Podcast podcastInfo) throws DocumentException {
-
-    SimpleDateFormat formatter = new SimpleDateFormat(
-        "EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.US);
 
     TimingLogger logger = new TimingLogger(TAG, "parseEpisodesFromResponse");
     List<ContentValues> contentValuesList = new ArrayList<>();
@@ -86,7 +47,7 @@ public class PodcastEpisodeModel {
     for (Element item : channel.elements("item")) {
       ContentValues cv = parseEpisodeContentValueFromElement(item, formatter);
       if (cv != null) {
-        cv.put(PODCAST_UUID, podcastInfo.id.toString());
+        cv.put(PODCAST_UUID, podcastUuid);
         contentValuesList.add(cv);
       }
     }
@@ -102,7 +63,8 @@ public class PodcastEpisodeModel {
     contentValues.put(DESCRIPTION, item.elementText("description"));
 
     try {
-      contentValues.put(PUBLICATION_DATE, formatter.parse(item.elementText("pubDate").trim()).getTime());
+      contentValues.put(PUBLICATION_DATE,
+          formatter.parse(item.elementText("pubDate").trim()).getTime());
     } catch (ParseException e) {
       Logger.e(TAG, "Episode item: " + contentValues.getAsString(TITLE) + " date format parse exception. Skipping", e);
       return null;
@@ -130,5 +92,4 @@ public class PodcastEpisodeModel {
     // this regex removes those before parsing.
     return xmlResponse.replaceAll("^[^<]*<", "<");
   }
-
 }

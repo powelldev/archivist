@@ -17,7 +17,7 @@ public class PodcastSearchResultFragment extends Fragment implements PodcastSear
 
   private static final String ARGUMENT_SEARCH_RESULT = "search_result";
 
-  public static PodcastSearchResultFragment createFragemnt(SearchResult result) {
+  public static PodcastSearchResultFragment createFragment(SearchResult result) {
     Bundle arguments = new Bundle();
     arguments.putParcelable(ARGUMENT_SEARCH_RESULT, result);
     PodcastSearchResultFragment fragment = new PodcastSearchResultFragment();

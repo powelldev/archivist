@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.fireminder.archivist.IvyApplication;
 import com.fireminder.archivist.R;
-import com.fireminder.archivist.model.PodcastEpisodeModel;
+import com.fireminder.archivist.model.PodcastSubscriber;
 import com.fireminder.archivist.search.list.SearchResultListFragment;
 import com.fireminder.archivist.ui.BaseActivity;
 import com.fireminder.archivist.utils.Logger;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
 public class SearchBaseActivity extends BaseActivity {
 
   @Inject
-  PodcastEpisodeModel podcastEpisodeModel;
+  PodcastSubscriber podcastSubscriber;
 
 
   private static final String TAG = "SearchBaseActivity";

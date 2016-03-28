@@ -24,9 +24,9 @@ public class PodcastEpisodeModelModule {
 
   @Provides
   @Singleton
-  PodcastEpisodeModel providesPodcastEpisodeModel(NetworkApi networkApi, PodcastDao podcastDao,
+  PodcastSubscriber providesPodcastEpisodeModel(NetworkApi networkApi, PodcastDao podcastDao,
     EpisodeDao episodeDao) {
-    return new PodcastEpisodeModel(networkApi, podcastDao, episodeDao);
+    return new PodcastSubscriber(networkApi, podcastDao, episodeDao, new EpisodeXmlParser(), new PodcastXmlParser());
   }
 
 }

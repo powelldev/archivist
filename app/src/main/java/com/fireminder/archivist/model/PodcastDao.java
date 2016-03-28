@@ -9,7 +9,9 @@ import com.fireminder.archivist.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import static com.fireminder.archivist.model.PodcastTable.Contract.*;
 import static com.fireminder.archivist.model.PodcastTable.Podcast;
 
 public class PodcastDao {
@@ -37,6 +39,13 @@ public class PodcastDao {
     return podcasts;
   }
 
+  public void insert(ContentValues podcast) {
+    if (podcast.get(PODCAST_UUID) == null) {
+      podcast.put(PODCAST_UUID, UUID.randomUUID().toString());
+    }
+    final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();
+    contentResolver.insert(IvyContentProvider.Table.Podcasts.uri, podcast);
+  }
 
   public void insert(Podcast podcast) {
     final ContentResolver contentResolver = IvyApplication.getAppContext().getContentResolver();

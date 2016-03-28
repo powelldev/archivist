@@ -16,12 +16,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.fireminder.archivist.IvyApplication;
 import com.fireminder.archivist.R;
+import com.fireminder.archivist.model.PodcastSubscriber;
 import com.fireminder.archivist.search.SearchResult;
 import com.fireminder.archivist.search.model.Injection;
 import com.fireminder.archivist.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class SearchResultListFragment extends Fragment implements SearchListResultContract.View {
 
@@ -30,6 +33,9 @@ public class SearchResultListFragment extends Fragment implements SearchListResu
 
   private RecyclerView resultsListView;
   private SearchAdapter resultsAdapter;
+
+  @Inject
+  PodcastSubscriber podcastSubscriber;
 
   public static final String EXTRA_QUERY = "query";
 
@@ -51,7 +57,9 @@ public class SearchResultListFragment extends Fragment implements SearchListResu
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mUserActionListener = new SearchListResultPresenter(Injection.provideSearchRepository(), this);
+    IvyApplication.getAppContext().getDbComponent().inject(this);
+    mUserActionListener = new SearchListResultPresenter(Injection.provideSearchRepository(), this,
+        podcastSubscriber);
     resultsAdapter = new SearchAdapter(new ArrayList<SearchResult>(), mUserActionListener);
   }
 
