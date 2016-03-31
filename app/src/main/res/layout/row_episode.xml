@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:textAlignment="center"
+        tools:text="Mar\n18"
+        />
+
+    <ImageButton
+        android:id="@+id/action"
+        android:background="?android:selectableItemBackground"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        tools:src="@drawable/ic_alert_circle_outline_grey600_36dp"
+        android:layout_gravity="right"
+        android:layout_width="36dp"
+        android:layout_height="36dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
+        android:layout_marginTop="16dp"
+        tools:text="This is an episode title that is excessively long, testing word wrap."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/actionSubtext"
+        android:layout_gravity="bottom|right"
+        android:layout_marginTop="48dp"
+        android:layout_marginRight="8dp"
+        tools:text="37 MB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

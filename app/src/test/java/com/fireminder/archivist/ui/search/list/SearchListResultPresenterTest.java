@@ -6,15 +6,20 @@ import com.fireminder.archivist.search.model.SearchResultsRepository;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class SearchListResultPresenterTest {
 
   @Mock
@@ -33,12 +38,7 @@ public class SearchListResultPresenterTest {
   @Before
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
-    presenter = new SearchListResultPresenter(repository, view, podcastEpisodeModel);
-  }
-
-  @Test
-  public void openSearchResultDetail() throws Exception {
-
+    presenter = new SearchListResultPresenter(repository, view, podcastSubscriber);
   }
 
   @Test
