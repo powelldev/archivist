@@ -10,9 +10,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.fireminder.archivist.IvyApplication;
 import com.fireminder.archivist.R;
 import com.fireminder.archivist.model.EpisodeTable;
 import com.fireminder.archivist.model.EpisodeTable.Episode;
+import com.fireminder.archivist.sync.IvyDownloadManager;
+
+import javax.inject.Inject;
 
 public class EpisodeRowView extends RecyclerView.ViewHolder {
 
@@ -30,7 +34,7 @@ public class EpisodeRowView extends RecyclerView.ViewHolder {
     actionSubtext = (TextView) rootView.findViewById(R.id.actionSubtext);
   }
 
-  public void bindEpisode(Episode episode) {
+  public void bindEpisode(final Episode episode, final IvyDownloadManager downloadManager) {
     this.episode = episode;
 
     date.setText(toMonthDate(episode.pubDate));
@@ -38,23 +42,29 @@ public class EpisodeRowView extends RecyclerView.ViewHolder {
 
     switch (episode.downloadStatus) {
       case DOWNLOADED:
-        action.setImageResource(R.drawable.ic_play_circle_outline_black_48dp);
+        action.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         actionSubtext.setText("" + episode.duration);
         break;
       case NOT_DOWNLOADED:
-        action.setImageResource(R.drawable.ic_arrow_down_bold_circle_outline_black_48dp);
+        action.setImageResource(R.drawable.ic_arrow_down_bold_circle_outline_black_36dp);
         actionSubtext.setText("" + episode.sizeInBytes);
         break;
       case DOWNLOAD_ATTEMPTED_FAILED:
-        action.setImageResource(R.drawable.ic_alert_circle_outline_black_48dp);
+        action.setImageResource(R.drawable.ic_alert_circle_outline_black_36dp);
         actionSubtext.setText("Error");
         break;
       case FLAGGED_FOR_DOWNLOAD:
-        action.setImageResource(R.drawable.ic_minus_circle_outline_black_48dp);
+        action.setImageResource(R.drawable.ic_minus_circle_outline_black_36dp);
         actionSubtext.setText("" + episode.bytesDownloaded);
         break;
     }
 
+    action.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        downloadManager.download(episode, false);
+      }
+    });
 
   }
 

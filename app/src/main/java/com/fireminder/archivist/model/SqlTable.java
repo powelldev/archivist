@@ -2,6 +2,10 @@ package com.fireminder.archivist.model;
 
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,16 +82,26 @@ public abstract class SqlTable {
     public static final String _ID = "_id";
     private final Type type;
     private final String name;
+    private final String defaultValue;
 
     public Column(@NonNull Type type, @NonNull String name) {
+      this(type, name, null);
+    }
+
+    public Column(@NonNull Type type, @NonNull String name, @Nullable String defaultValue) {
       this.type = type;
       this.name = name;
+      this.defaultValue = defaultValue;
     }
 
     public String createCommand() {
       StringBuilder builder = new StringBuilder();
       builder.append(this.name).append(" ")
           .append(type.getType());
+      if (!TextUtils.isEmpty(defaultValue)) {
+        builder.append(" ").append("DEFAULT ")
+            .append(defaultValue);
+      }
       if (this.name.equals(_ID)) {
         builder.append(" PRIMARY KEY AUTOINCREMENT");
       }

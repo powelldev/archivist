@@ -52,13 +52,13 @@ public class EpisodeTable extends SqlTable {
         new Column(Type.TEXT, Contract.LOCAL_URI),
         new Column(Type.TEXT, Contract.EPISODE_UUID),
         new Column(Type.INTEGER, Contract.PUBLICATION_DATE),
-        new Column(Type.INTEGER, Contract.DURATION),
-        new Column(Type.INTEGER, Contract.ELAPSED),
+        new Column(Type.INTEGER, Contract.DURATION, "0"),
+        new Column(Type.INTEGER, Contract.ELAPSED, "0"),
         new Column(Type.INTEGER, Contract.PODCAST_UUID),
-        new Column(Type.INTEGER, Contract.DOWNLOADED_STATUS),
-        new Column(Type.BOOLEAN, Contract.WAS_LISTENED_TO),
-        new Column(Type.INTEGER, Contract.SIZE_IN_BYTES),
-        new Column(Type.INTEGER, Contract.BYTES_DOWNLOADED)
+        new Column(Type.INTEGER, Contract.DOWNLOADED_STATUS, "" + DownloadStatus.NOT_DOWNLOADED.id),
+        new Column(Type.BOOLEAN, Contract.WAS_LISTENED_TO, "0"),
+        new Column(Type.INTEGER, Contract.SIZE_IN_BYTES, "0"),
+        new Column(Type.INTEGER, Contract.BYTES_DOWNLOADED, "0")
     };
     setColumns(columns);
   }

@@ -1,6 +1,7 @@
 package com.fireminder.archivist.model;
 
 import com.fireminder.archivist.components.NetworkApi;
+import com.fireminder.archivist.sync.IvyDownloadManager;
 
 import javax.inject.Singleton;
 

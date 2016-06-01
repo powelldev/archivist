@@ -25,9 +25,6 @@ public class Logger {
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private static File sLog;
 
-  private static HandlerThread sHandlerThread;
-  private static Handler sHandler;
-
   public static void d(String tag, String s) {
     android.util.Log.d(TAG, tag + ": " + s);
     write(System.currentTimeMillis(), Level.DEBUG, tag, s);

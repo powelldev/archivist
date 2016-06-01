@@ -22,6 +22,7 @@ import com.fireminder.archivist.model.EpisodeTable;
 import com.fireminder.archivist.model.IvyContentProvider;
 import com.fireminder.archivist.model.PodcastDao;
 import com.fireminder.archivist.model.PodcastTable;
+import com.fireminder.archivist.sync.IvyDownloadManager;
 import com.fireminder.archivist.utils.Logger;
 
 import java.util.UUID;
@@ -46,6 +47,9 @@ public class PodcastFragment extends Fragment implements LoaderManager.LoaderCal
 
   @Bind(R.id.image)
   ImageView album;
+
+  @Inject
+  IvyDownloadManager downloadManager;
 
   EpisodeCursorRecyclerAdapter adapter;
 
@@ -146,7 +150,7 @@ public class PodcastFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onBindViewHolder(EpisodeRowView holder, Cursor cursor) {
       EpisodeTable.Episode episode = new EpisodeTable.Episode(cursor);
-      holder.bindEpisode(episode);
+      holder.bindEpisode(episode, downloadManager);
     }
   }
 

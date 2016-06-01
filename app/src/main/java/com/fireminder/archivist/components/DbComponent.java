@@ -1,5 +1,6 @@
 package com.fireminder.archivist.components;
 
+import com.fireminder.archivist.library.EpisodeRowView;
 import com.fireminder.archivist.library.LibraryFragment;
 import com.fireminder.archivist.library.PodcastFragment;
 import com.fireminder.archivist.model.PodcastEpisodeModelModule;
